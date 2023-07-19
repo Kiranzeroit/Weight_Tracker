@@ -15,19 +15,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kiran.weighttracker.MainActivity;
+import com.kiran.weighttracker.Session;
 import com.kiran.weighttracker.databinding.ActivitySignUpBinding;
 import com.kiran.weighttracker.modals.CommonModal;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySignUpBinding binding;
-    private FirebaseAuth firebaseAuth;
+    private Session session;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        firebaseAuth = FirebaseAuth.getInstance();
+        session = new Session(this);
         initView();
     }
 
@@ -45,26 +46,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 commonModal.email = binding.etEmail.getText().toString().trim();
                 String password = binding.etPassword.getText().toString().trim();
                 commonModal.mobile = binding.etMobile.getText().toString().trim();
-                firebaseAuth.createUserWithEmailAndPassword(commonModal.email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this, "Sign Up", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
 
-                    }
-                });
+                Toast.makeText(SignUpActivity.this, "Sign Up", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                startActivity(intent);
             }
-
 
         }
     }
+
 
     private boolean isValidation() {
         if (binding.etName.getText().toString().trim().isEmpty()) {
