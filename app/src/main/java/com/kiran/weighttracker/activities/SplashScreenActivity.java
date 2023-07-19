@@ -22,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler = new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                Intent intent = new Intent(SplashScreenActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 finishAffinity();
             }
