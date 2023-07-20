@@ -5,23 +5,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.kiran.weighttracker.DatabaseHelper;
 import com.kiran.weighttracker.MainActivity;
 import com.kiran.weighttracker.Session;
 import com.kiran.weighttracker.databinding.ActivitySignUpBinding;
-import com.kiran.weighttracker.modals.CommonModal;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySignUpBinding binding;
     private Session session;
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,6 +24,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         session = new Session(this);
+        databaseHelper = new DatabaseHelper(this);
         initView();
     }
 
@@ -40,21 +36,29 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         if (view == binding.btnSignUp) {
             if (isValidation()) {
-                CommonModal commonModal = new CommonModal();
-                commonModal.name = binding.etName.getText().toString().trim();
-                commonModal.age = binding.etAge.getText().toString().trim();
-                commonModal.email = binding.etEmail.getText().toString().trim();
+                String name = binding.etName.getText().toString().trim();
+                String age = binding.etAge.getText().toString().trim();
+                String email = binding.etEmail.getText().toString().trim();
                 String password = binding.etPassword.getText().toString().trim();
-                commonModal.mobile = binding.etMobile.getText().toString().trim();
+                String mobile = binding.etMobile.getText().toString().trim();
+                String targetWeight = binding.etWeightTarget.getText().toString().trim();
 
-                Toast.makeText(SignUpActivity.this, "Sign Up", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                startActivity(intent);
+                Boolean checkUserEmail = databaseHelper.checkEmail(email);
+                if (checkUserEmail) {
+                    Boolean insert = databaseHelper.insertData(name, age, email, password, mobile, targetWeight);
+                    if (insert) {
+                        Toast.makeText(this, "SignUp successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "SignUp failed", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "User already exist, please login", Toast.LENGTH_SHORT).show();
+                }
             }
-
         }
     }
-
 
     private boolean isValidation() {
         if (binding.etName.getText().toString().trim().isEmpty()) {
@@ -79,7 +83,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return false;
         } else if (binding.etWeightTarget.getText().toString().trim().isEmpty()) {
             binding.etWeightTarget.requestFocus();
-            binding.etWeightTarget.setError("First enter your mobile");
+            binding.etWeightTarget.setError("First enter your target weight");
             return false;
         }
         return true;
