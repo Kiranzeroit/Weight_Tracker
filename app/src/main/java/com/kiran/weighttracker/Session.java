@@ -24,4 +24,7 @@ public class Session {
         editor.putBoolean(key, value);
         editor.commit();
     }
+    public Boolean getBooleanValue(String key){
+        return sharedPreferences.getBoolean(key,false);
+    }
 }

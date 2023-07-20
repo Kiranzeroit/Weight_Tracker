@@ -1,6 +1,73 @@
 package com.kiran.weighttracker.activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LoginActivity extends AppCompatActivity {
+import com.kiran.weighttracker.DatabaseHelper;
+import com.kiran.weighttracker.MainActivity;
+import com.kiran.weighttracker.Session;
+import com.kiran.weighttracker.databinding.ActivityLoginBinding;
+import com.kiran.weighttracker.modals.CommonModal;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private ActivityLoginBinding binding;
+    private Session session;
+    private DatabaseHelper databaseHelper;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        databaseHelper = new DatabaseHelper(this);
+        session = new Session(this);
+        initView();
+
+    }
+
+    private void initView() {
+        binding.btnSignIn.setOnClickListener(this);
+        binding.btnSignUp.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == binding.btnSignIn) {
+            if (isValidation()) {
+                String email = binding.etEmail.getText().toString().trim();
+                String password = binding.etPassword.getText().toString().trim();
+                session.setBooleanValue("LOGIN", true);
+
+                Boolean userLogin = databaseHelper.checkEmailPassword(email, password);
+                if (userLogin) {
+                    Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                  //  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                  //  startActivity(intent);
+                }
+            }
+        }
+        else if (view == binding.btnSignUp) {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            startActivity(intent);
+        }
+
+    }
+
+    private boolean isValidation() {
+        if (binding.etEmail.getText().toString().trim().isEmpty()) {
+            binding.etEmail.requestFocus();
+            binding.etEmail.setError("First enter your email");
+            return false;
+        } else if (binding.etPassword.getText().toString().trim().isEmpty()) {
+            binding.etPassword.requestFocus();
+            binding.etPassword.setError("First enter your password");
+            return false;
+        }
+        return true;
+    }
 }
