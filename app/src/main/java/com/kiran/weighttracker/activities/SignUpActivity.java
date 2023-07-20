@@ -50,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             "" + mobile, "" + targetWeight);
 
                     Toast.makeText(this, "SignUp successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                     startActivity(intent);
                     finishAffinity();
                 } else {

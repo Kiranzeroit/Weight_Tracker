@@ -37,7 +37,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void saveUser(String name, String age,String email, String password, String mobile, String targetWeight) {
+    public void saveUser(String name, String age, String email, String password, String mobile, String targetWeight) {
         // Get the writable database
         SQLiteDatabase db = getWritableDatabase();
 
@@ -74,16 +74,29 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean isUserExist(String email){
+    public boolean isUserExist(String email) {
         SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+
+        // Check if there is a row in the result set
+        if (cursor.moveToFirst()) {
+
+            ProfileModel obj = new ProfileModel();
+            obj.email = cursor.getString(cursor.getColumnIndex("email"));
+            obj.password = cursor.getString(cursor.getColumnIndex("password"));
+        }
+
+        //   SQLiteDatabase db = getReadableDatabase();
 
         // Create a cursor to query the users table
-        Cursor cursor = db.query("users", null, "email = ?", new String[]{email}, null, null, null);
-
+//        Cursor cursor = db.query("users", null, "email = ?", new String[]{email}, null, null, null);
+        //  Cursor cursor = db.rawQuery("SELECT value FROM users GROUP BY email = ?", new String[]{email});
         // Check if the cursor has any rows
         if (cursor.getCount() == 0) {
+            cursor.close();
             return false;
         } else {
+            cursor.close();
             // The user exists, so return true
             return true;
         }
