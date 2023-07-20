@@ -8,15 +8,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.kiran.weighttracker.DatabaseHelper;
 import com.kiran.weighttracker.MainActivity;
 import com.kiran.weighttracker.Session;
+import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.databinding.ActivitySignUpBinding;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivitySignUpBinding binding;
     private Session session;
-    private DatabaseHelper databaseHelper;
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,7 +24,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         session = new Session(this);
-        databaseHelper = new DatabaseHelper(this);
+        mySQLiteOpenHelper = new MySQLiteOpenHelper(this);
         initView();
     }
 
@@ -43,16 +43,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 String mobile = binding.etMobile.getText().toString().trim();
                 String targetWeight = binding.etWeightTarget.getText().toString().trim();
 
-                Boolean checkUserEmail = databaseHelper.checkEmail(email);
-                if (checkUserEmail) {
-                    Boolean insert = databaseHelper.insertData(name, age, email, password, mobile, targetWeight);
-                    if (insert) {
-                        Toast.makeText(this, "SignUp successfully", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(this, "SignUp failed", Toast.LENGTH_SHORT).show();
-                    }
+                boolean isUserExist = mySQLiteOpenHelper.isUserExist(email);
+                if (!isUserExist) {
+
+                    mySQLiteOpenHelper.saveUser("" + name, "" + age, "" + email, "" + password,
+                            "" + mobile, "" + targetWeight);
+
+                    Toast.makeText(this, "SignUp successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finishAffinity();
                 } else {
                     Toast.makeText(this, "User already exist, please login", Toast.LENGTH_SHORT).show();
                 }

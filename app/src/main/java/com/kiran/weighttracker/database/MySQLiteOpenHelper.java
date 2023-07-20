@@ -25,7 +25,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create the table
-        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, password TEXT)");
+        db.execSQL("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, password TEXT, name TEXT, age TEXT, mobile TEXT, targetWeight TEXT)");
     }
 
     @Override
@@ -37,14 +37,19 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void saveUser(String email, String password) {
+    public void saveUser(String name, String age, String email, String password, String mobile, String targetWeight) {
         // Get the writable database
         SQLiteDatabase db = getWritableDatabase();
 
         // Create a ContentValues object to store the data
         ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("age", age);
         values.put("email", email);
         values.put("password", password);
+        values.put("mobile", mobile);
+        values.put("targetWeight", targetWeight);
+
 
         // Insert the data into the database
         db.insert("users", null, values);
@@ -69,6 +74,34 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    public boolean isUserExist(String email) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM users WHERE email = ?", new String[]{email});
+
+        // Check if there is a row in the result set
+        if (cursor.moveToFirst()) {
+
+            ProfileModel obj = new ProfileModel();
+            obj.email = cursor.getString(cursor.getColumnIndex("email"));
+            obj.password = cursor.getString(cursor.getColumnIndex("password"));
+        }
+
+        //   SQLiteDatabase db = getReadableDatabase();
+
+        // Create a cursor to query the users table
+//        Cursor cursor = db.query("users", null, "email = ?", new String[]{email}, null, null, null);
+        //  Cursor cursor = db.rawQuery("SELECT value FROM users GROUP BY email = ?", new String[]{email});
+        // Check if the cursor has any rows
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            return false;
+        } else {
+            cursor.close();
+            // The user exists, so return true
+            return true;
+        }
+    }
+
     public List<ProfileModel> getUsersList(String email, String password) {
         // Get the readable database
         SQLiteDatabase db = getReadableDatabase();
@@ -81,8 +114,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     ProfileModel obj = new ProfileModel();
-                    obj.email = cursor.getString(cursor.getColumnIndex("email"));
-                    obj.password = cursor.getString(cursor.getColumnIndex("password"));
+                   /* obj.email = cursor.getString(cursor.getColumnIndex("email"));
+                    obj.password = cursor.getString(cursor.getColumnIndex("password"));*/
                     item_data.add(obj);
                 } while (cursor.moveToNext());
             }

@@ -8,23 +8,22 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.kiran.weighttracker.DatabaseHelper;
 import com.kiran.weighttracker.MainActivity;
 import com.kiran.weighttracker.Session;
+import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.databinding.ActivityLoginBinding;
-import com.kiran.weighttracker.modals.CommonModal;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityLoginBinding binding;
     private Session session;
-    private DatabaseHelper databaseHelper;
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        databaseHelper = new DatabaseHelper(this);
+        mySQLiteOpenHelper = new MySQLiteOpenHelper(this);
         session = new Session(this);
         initView();
 
@@ -41,17 +40,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (isValidation()) {
                 String email = binding.etEmail.getText().toString().trim();
                 String password = binding.etPassword.getText().toString().trim();
-                session.setBooleanValue("LOGIN", true);
 
-                Boolean userLogin = databaseHelper.checkEmailPassword(email, password);
-                if (userLogin) {
+                boolean isUserExist = mySQLiteOpenHelper.isUserExist(email);
+                if (isUserExist) {
+                    session.setBooleanValue("LOGIN", true);
                     Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                  //  Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                  //  startActivity(intent);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "User doesn't exist, please signup", Toast.LENGTH_SHORT).show();
                 }
             }
-        }
-        else if (view == binding.btnSignUp) {
+        } else if (view == binding.btnSignUp) {
             Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
