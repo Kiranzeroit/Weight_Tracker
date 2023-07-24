@@ -1,74 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:background="@drawable/bg_top_round_corner"
+    tools:backgroundTint="@color/bg_selected_item">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivClose"
         android:layout_width="@dimen/_24sdp"
         android:layout_height="@dimen/_24sdp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="@dimen/_3sdp"
-        android:src="@drawable/ic_close"/>
+        android:src="@drawable/ic_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/_25sdp"
-        android:background="@drawable/bg_round_corner_red"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:padding="@dimen/_3sdp">
+        android:background="@drawable/bg_round_corner_red"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintTop_toBottomOf="@+id/ivClose">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvBalanceWallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tvRechargeWallet"
+            android:text="Balance wallet"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
-            android:text="Balance wallet"/>
+            app:layout_constraintEnd_toStartOf="@id/tvRechargeWallet"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvRechargeWallet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvBalanceWallet"
+            android:text="Balance wallet"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
-            android:text="Balance wallet"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvBalanceWallet"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvBalanceWallet"
-            app:layout_constraintStart_toStartOf="@id/tvBalanceWallet"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="6.34"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp"
             app:layout_constraintEnd_toEndOf="@id/tvBalanceWallet"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
-            android:text="6.34"
-            android:layout_marginTop="@dimen/_3sdp"/>
+            app:layout_constraintStart_toStartOf="@id/tvBalanceWallet"
+            app:layout_constraintTop_toBottomOf="@id/tvBalanceWallet" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvRechargeWallet"
-            app:layout_constraintStart_toStartOf="@id/tvRechargeWallet"
-            app:layout_constraintEnd_toEndOf="@id/tvRechargeWallet"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:text="6.34"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
-            android:text="6.34"
-            android:layout_marginTop="@dimen/_3sdp"/>
-
+            app:layout_constraintEnd_toEndOf="@id/tvRechargeWallet"
+            app:layout_constraintStart_toStartOf="@id/tvRechargeWallet"
+            app:layout_constraintTop_toBottomOf="@id/tvRechargeWallet" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,80 +77,79 @@
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/cLayout"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/_35sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:text="Price"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
-        android:text="Price"
-        android:layout_marginStart="@dimen/_35sdp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cLayout" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvPriceNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/tvPrice"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_35sdp"
+        android:text="₹500.00"
         android:textColor="@color/theme_red"
         android:textSize="@dimen/_14sdp"
-        android:text="₹500.00"
-        android:layout_marginEnd="@dimen/_35sdp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvPrice" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvPrice"
-        app:layout_constraintStart_toStartOf="@id/tvPrice"
         android:layout_marginTop="@dimen/_5sdp"
+        android:text="Total"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
-        android:text="Total"/>
+        app:layout_constraintStart_toStartOf="@id/tvPrice"
+        app:layout_constraintTop_toBottomOf="@id/tvPrice" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTotalNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/tvTotal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/_35sdp"
+        android:text="₹500.00"
         android:textColor="@color/theme_red"
         android:textSize="@dimen/_14sdp"
-        android:text="₹500.00"
-        android:layout_marginEnd="@dimen/_35sdp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTotal" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvCoupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvTotal"
-        app:layout_constraintStart_toStartOf="@id/tvTotal"
         android:layout_marginTop="@dimen/_5sdp"
+        android:text="Coupon"
         android:textColor="@color/black"
         android:textSize="@dimen/_14sdp"
-        android:text="Coupon"/>
+        app:layout_constraintStart_toStartOf="@id/tvTotal"
+        app:layout_constraintTop_toBottomOf="@id/tvTotal" />
 
     <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/SpinnerCoupon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/tvCoupon"
+        android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="@id/tvPriceNo"
-        android:spinnerMode="dropdown"/>
+        app:layout_constraintTop_toTopOf="@id/tvCoupon" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tvCoupon"
+        android:layout_marginStart="@dimen/_35sdp"
         android:layout_marginTop="@dimen/_7sdp"
+        android:layout_marginEnd="@dimen/_35sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:background="@drawable/bg_round_corner_red"
+        android:text="Confirm"
         android:textColor="@color/white"
         android:textSize="@dimen/_14sdp"
-        android:layout_marginStart="@dimen/_35sdp"
-        android:layout_marginEnd="@dimen/_35sdp"
-        android:text="Confirm"
-        android:background="@drawable/bg_round_corner_red"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="@dimen/_5sdp"/>
-
+        app:layout_constraintTop_toBottomOf="@id/tvCoupon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

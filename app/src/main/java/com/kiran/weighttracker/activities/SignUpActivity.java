@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.kiran.weighttracker.MainActivity;
 import com.kiran.weighttracker.Session;
 import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.databinding.ActivitySignUpBinding;

@@ -199,13 +199,9 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         // Check if the cursor has any rows
     }
 
+    @SuppressLint("Range")
     public List<TargetModal> getUsersTargetList() {
-        // Get the readable database
-      /*  SQLiteDatabase db = getReadableDatabase();
 
-        // Create a cursor to query the users table
-        Cursor cursor = db.query("users", null, "email = ? AND password = ? AND name=? AND age=? AND mobile=? AND targetWeight =?", new String[]{email, password, name, age, mobile, targetWeight}, null, null, null);
-*/
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + "targetDetails", null);
         List<TargetModal> item_data = new ArrayList<>();
@@ -224,6 +220,48 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return item_data;
     }
+
+    public void updateUser(String email, String password) {
+        // Get the writable database
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Create a ContentValues object to store the data
+        ContentValues values = new ContentValues();
+        values.put("password", password);
+
+        // Update the data in the database
+        db.update("users", values, "email = ?", new String[]{email});
+
+        // Close the database
+        db.close();
+    }
+
+    public void deleteUser(String email) {
+        // Get the writable database
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Delete the data from the database
+        db.delete("users", "email = ?", new String[]{email});
+
+        // Close the database
+        db.close();
+    }
+
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, "targetDetails");
+        return numRows;
+    }
+}
+
+
+
+
+
+
+
+
+
 
 /*    public ArrayList<CommonModal> readCourses()
     {
@@ -262,37 +300,3 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         cursor.close();
         return list;
     }*/
-
-    public void updateUser(String email, String password) {
-        // Get the writable database
-        SQLiteDatabase db = getWritableDatabase();
-
-        // Create a ContentValues object to store the data
-        ContentValues values = new ContentValues();
-        values.put("password", password);
-
-        // Update the data in the database
-        db.update("users", values, "email = ?", new String[]{email});
-
-        // Close the database
-        db.close();
-    }
-
-    public void deleteUser(String email) {
-        // Get the writable database
-        SQLiteDatabase db = getWritableDatabase();
-
-        // Delete the data from the database
-        db.delete("users", "email = ?", new String[]{email});
-
-        // Close the database
-        db.close();
-    }
-
-    public int numberOfRows(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db, "targetDetails");
-        return numRows;
-    }
-}
-

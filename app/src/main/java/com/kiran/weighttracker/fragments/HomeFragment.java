@@ -16,8 +16,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.kiran.weighttracker.R;
 import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.modals.TargetModal;
@@ -29,12 +27,10 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private MySQLiteOpenHelper mySQLiteOpenHelper;
-    private TargetModal targetModal;
     private BarChart barChart;
-    private BarData barData;
-    private List<TargetModal> list;
     private BarDataSet barDataSet1, barDataSet2;
-    private ArrayList barEntries;
+    private ArrayList<BarEntry> barEntries;
+    private List<TargetModal> targetList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -46,16 +42,13 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mySQLiteOpenHelper = new MySQLiteOpenHelper(requireActivity());
-        targetModal = new TargetModal();
-        list = new ArrayList<>();
         initView(view);
 
     }
 
     private void initView(View view) {
         barChart = view.findViewById(R.id.barChart);
-        targetModal = mySQLiteOpenHelper.getUserTargetDetails();
-        int weight = mySQLiteOpenHelper.numberOfRows();
+        targetList = mySQLiteOpenHelper.getUsersTargetList();
 
         barDataSet1 = new BarDataSet(getBarEntriesOne(), "Weight");
         barDataSet1.setColor(requireActivity().getResources().getColor(R.color.app));
@@ -68,7 +61,7 @@ public class HomeFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(Collections.singleton(targetModal.date)));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(Collections.singleton("jj")));
         xAxis.setCenterAxisLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1);
@@ -88,23 +81,17 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<BarEntry> getBarEntriesOne() {
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.weight)));
-      /*  barEntries.add(new BarEntry(20f, 6));
-        barEntries.add(new BarEntry(30f, 8));
-        barEntries.add(new BarEntry(40f, 2));
-        barEntries.add(new BarEntry(50f, 4));
-        barEntries.add(new BarEntry(60f, 1));*/
+        for (TargetModal targetModal : targetList) {
+            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.weight)));
+        }
         return barEntries;
     }
 
     private ArrayList<BarEntry> getBarEntriesTwo() {
         barEntries = new ArrayList<>();
-        barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.Calories)));
- /*       barEntries.add(new BarEntry(20f, 12));
-        barEntries.add(new BarEntry(30f, 4));
-        barEntries.add(new BarEntry(40f, 1));
-        barEntries.add(new BarEntry(50f, 7));
-        barEntries.add(new BarEntry(60f, 3));*/
+        for (TargetModal targetModal : targetList) {
+            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.Calories)));
+        }
         return barEntries;
     }
 
