@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Weight Tracker</string>
+    <string name="current_chart">Current Chart</string>
 </resources>

@@ -11,5 +11,4 @@ public class ProfileModel {
     public String age = "";
     public String mobile = "";
     public String targetWeight = "";
-
 }

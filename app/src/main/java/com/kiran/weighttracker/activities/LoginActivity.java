@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 boolean isUserExist = mySQLiteOpenHelper.isUserExist(email);
                 if (isUserExist) {
                     session.setBooleanValue("LOGIN", true);
+                    session.setStringValue("email",email);
                     Toast.makeText(this, "Login Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
