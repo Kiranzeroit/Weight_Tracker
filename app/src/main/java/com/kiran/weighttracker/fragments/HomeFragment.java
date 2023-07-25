@@ -21,8 +21,6 @@ import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.modals.TargetModal;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -63,17 +61,17 @@ public class HomeFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(getList()));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getListAxis()));
         xAxis.setCenterAxisLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1);
         xAxis.setGranularityEnabled(true);
-        
+
         barChart.setDragEnabled(true);
         barChart.setVisibleXRangeMaximum(3);
         float barSpace = 0.1f;
-        float groupSpace = 1.5f;
-        data.setBarWidth(0.5f);
+        float groupSpace = 0.5f;
+        data.setBarWidth(0.15f);
         barChart.getXAxis().setAxisMinimum(0);
         barChart.animate();
         barChart.groupBars(0, groupSpace, barSpace);
@@ -82,62 +80,40 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<BarEntry> getBarEntriesOne() {
         barEntries = new ArrayList<>();
-        for (TargetModal targetModal : targetList) {
-            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.weight)));
+        for (int i = 0; i < targetList.size(); i++) {
+            barEntries.add(new BarEntry(i, Float.parseFloat(targetList.get(i).weight)));
         }
+       /* for (TargetModal targetModal : targetList) {
+            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.weight)));
+        }*/
         return barEntries;
     }
 
     private ArrayList<BarEntry> getBarEntriesTwo() {
         barEntries = new ArrayList<>();
-        for (TargetModal targetModal : targetList) {
-            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.Calories)));
+        for (int i = 0; i < targetList.size(); i++) {
+            barEntries.add(new BarEntry(i, Float.parseFloat(targetList.get(i).Calories)));
         }
+        /*for (TargetModal targetModal : targetList) {
+            barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.Calories)));
+        }*/
         return barEntries;
     }
 
-    protected ArrayList<String> getList(){
-        list.clear();
-        for (TargetModal item: targetList) {
-            list.add(item.date);
+    protected String[] getList() {
+        String[] listxAxis = new String[targetList.size()];
+        for (int i = 0; i < targetList.size(); i++) {
+            listxAxis[i] = targetList.get(i).date;
         }
-        return  list;
+        return listxAxis;
     }
 
- /*   private List<IBarDataSet> getDataSet() {
-        List<IBarDataSet> dataSets = null;
-
-        List<BarEntry> listSet1 = new ArrayList<>();
-        BarEntry v1e1 = new BarEntry(8f,Float.parseFloat(targetModal.Calories));
-        listSet1.add(v1e1);
-        BarEntry v1e2 = new BarEntry(8f, 70f);
-        listSet1.add(v1e2);
-        BarEntry v1e3 = new BarEntry(8f, 68f);
-        listSet1.add(v1e3);
-        BarEntry v1e4 = new BarEntry(8f, 60);
-        listSet1.add(v1e4);
-
-
-
-        List<BarEntry> listSet2 = new ArrayList<>();
-        BarEntry v2e1 = new BarEntry(8f,Float.parseFloat(targetModal.weight));
-        listSet2.add(v2e1);
-        BarEntry v2e2 = new BarEntry(8f,50f);
-        listSet2.add(v2e2);
-        BarEntry v2e3 = new BarEntry(8f, 49f);
-        listSet2.add(v2e3);
-        BarEntry v2e4 = new BarEntry(8f, 55f);
-        listSet2.add(v2e4);
-
-        BarDataSet barDataSet1 = new BarDataSet(listSet1, "Current Weight");
-        barDataSet1.setColor(Color.rgb(0, 155, 0));
-        BarDataSet barDataSet2 = new BarDataSet(listSet2, "Calories Burn");
-        barDataSet2.setColors(ColorTemplate.COLORFUL_COLORS);
-
-        dataSets = new ArrayList<>();
-        dataSets.add(barDataSet1);
-        dataSets.add(barDataSet2);
-        return dataSets;
-    */
+    protected ArrayList<String> getListAxis() {
+        list.clear();
+        for (TargetModal item : targetList) {
+            list.add(item.date);
+        }
+        return list;
+    }
 
 }
