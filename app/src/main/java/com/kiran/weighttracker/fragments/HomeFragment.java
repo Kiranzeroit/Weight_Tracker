@@ -21,6 +21,7 @@ import com.kiran.weighttracker.database.MySQLiteOpenHelper;
 import com.kiran.weighttracker.modals.TargetModal;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
     private BarDataSet barDataSet1, barDataSet2;
     private ArrayList<BarEntry> barEntries;
     private List<TargetModal> targetList = new ArrayList<>();
+    private ArrayList<String> list = new ArrayList<>();
 
     @Nullable
     @Override
@@ -61,22 +63,21 @@ public class HomeFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(Collections.singleton("jj")));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(getList()));
         xAxis.setCenterAxisLabels(true);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1);
         xAxis.setGranularityEnabled(true);
-
+        
         barChart.setDragEnabled(true);
         barChart.setVisibleXRangeMaximum(3);
         float barSpace = 0.1f;
-        float groupSpace = 0.5f;
-        data.setBarWidth(0.15f);
+        float groupSpace = 1.5f;
+        data.setBarWidth(0.5f);
         barChart.getXAxis().setAxisMinimum(0);
         barChart.animate();
         barChart.groupBars(0, groupSpace, barSpace);
         barChart.invalidate();
-
     }
 
     private ArrayList<BarEntry> getBarEntriesOne() {
@@ -93,6 +94,14 @@ public class HomeFragment extends Fragment {
             barEntries.add(new BarEntry(10f, Float.parseFloat(targetModal.Calories)));
         }
         return barEntries;
+    }
+
+    protected ArrayList<String> getList(){
+        list.clear();
+        for (TargetModal item: targetList) {
+            list.add(item.date);
+        }
+        return  list;
     }
 
  /*   private List<IBarDataSet> getDataSet() {
@@ -129,6 +138,6 @@ public class HomeFragment extends Fragment {
         dataSets.add(barDataSet1);
         dataSets.add(barDataSet2);
         return dataSets;
-    }*/
+    */
 
 }

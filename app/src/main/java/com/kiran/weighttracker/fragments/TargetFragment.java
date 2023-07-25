@@ -59,6 +59,7 @@ public class TargetFragment extends Fragment implements View.OnClickListener, Cl
 
         targetAdapter = new TargetAdapter(requireActivity(), targetList, this);
         recyclerView.setAdapter(targetAdapter);
+        targetAdapter.notifyDataSetChanged();
 
         try {
             targetList = mySQLiteOpenHelper.getUsersTargetList();
