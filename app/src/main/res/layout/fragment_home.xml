@@ -7,9 +7,10 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_250sdp"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"/>
 
